@@ -1,12 +1,15 @@
 package com.example.jetpackquizapp.component
 
 import android.util.Log
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -36,6 +39,7 @@ fun Questions(viewModel: QuestionsViewModel) {
 @Preview
 @Composable
 fun QuestionDisplay() {
+    val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), phase = 0f)
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,15 +52,18 @@ fun QuestionDisplay() {
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
+            QuestionTracker()
+            DrawDottedLine(pathEffect = pathEffect)
 
         }
 
     }
 }
 
+// Question Tracker
 @Preview
 @Composable
-fun questionTracker(counter: Int = 10, outOf: Int = 100) {
+fun QuestionTracker(counter: Int = 10, outOf: Int = 100) {
     Text(
         text = buildAnnotatedString {
             withStyle(style = ParagraphStyle(textIndent = TextIndent.None)) {
@@ -80,6 +87,24 @@ fun questionTracker(counter: Int = 10, outOf: Int = 100) {
                 }
             }
         }, modifier = Modifier.padding(20.dp)
+    )
+}
+
+// Dotted Line
+@Composable
+fun DrawDottedLine(pathEffect: PathEffect) {
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp),
+        onDraw = {
+            drawLine(
+                color = AppColor.mLightGray,
+                start = Offset(0f, 0f),
+                end = Offset(size.width, y = 0f),
+                pathEffect = pathEffect
+            )
+        }
     )
 
 }
