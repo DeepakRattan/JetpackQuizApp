@@ -1,6 +1,7 @@
 package com.example.jetpackquizapp.di
 
 import com.example.jetpackquizapp.network.QuestionApi
+import com.example.jetpackquizapp.repository.QuestionRepository
 import com.example.jetpackquizapp.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -26,6 +27,9 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(QuestionApi::class.java)
-
     }
+
+    @Singleton
+    @Provides
+    fun provideQuestionRepository(questionApi: QuestionApi) = QuestionRepository(questionApi)
 }
